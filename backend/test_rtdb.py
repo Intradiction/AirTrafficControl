@@ -10,15 +10,20 @@ firebase_app = firebase_admin.initialize_app(cred, {
 # Access database
 ref = db.reference("/")
 
-ref.set({
-    "airplane1": {
-        "id": 1,
-        "model": "Boeing 737"
-    },
-    "airplane2": {
-        "id": 2,
-        "model": "Airbus A320"
-    },
+ref.push().set({
+    "Airplanes": {
+        "airplane1": {
+            "id": 1,
+            "model": "Boeing 737",
+            "runway_req": 1800
+        },
+        "airplane2": {
+            "id": 2,
+            "model": "Airbus A320",
+            "runway_req": 1700
+        },
+    }
+    
 })
 
 
