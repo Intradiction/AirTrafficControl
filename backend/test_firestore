@@ -13,13 +13,13 @@ db.collection("AirTrafficControl").document("Airplanes").set({
     "airplane1": {
         "id": 1,
         "model": "Boeing 737",
-        "runway_req": 1800,
+        "runwayReq": 1800,
         "location": "overhead_airspace" # location can be ["gate1", "gate2", "runway1", "runway2", "overhead_airspace", "distant"]
     },
     "airplane2": {
         "id": 2,
         "model": "Airbus A320",
-        "runway_req": 1700,
+        "runwayReq": 1700,
         "location": "gate2"
     },
 }, merge=True)
