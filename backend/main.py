@@ -1,10 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+
+# Initialize FastAPI app
 app = FastAPI()
 
-
-
+# CORS policy: allow all
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -13,6 +14,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# The api paths
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
