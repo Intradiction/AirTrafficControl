@@ -1,0 +1,76 @@
+
+.html {
+    justify-content:center;
+
+}
+
+.nav-container {
+    position:absolute;
+    top:2%;
+    align-self:center;
+    align-content:center;
+    display: flex;
+    flex-direction: row;
+    width: 95%;
+    height: 8vw;
+    background: #FFFEFE;
+    border-radius: 9px;
+}
+
+/* Clock */
+/* Auto layout */
+.clock {
+    white-space: nowrap;
+    width: 10%;
+    height: fit-content;
+    margin: auto 0;
+    padding: 0;
+    border: solid;
+    border-width: 1px 1px !important;
+    outline: none;
+    margin-right: 5%;
+    border-block-color: rgba(0,0,0,0.6);
+}
+/* Gates and Runways - LGA */
+.title {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 3.5vw;
+    text-align: center;
+    color: #000000;
+    margin: auto 0;
+    margin-left: 2vw;
+    white-space: nowrap;
+}
+
+.links-container {
+    display: flex;
+    width: 40%;
+    height: 7.5%;
+    line-height: 7.5%;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: auto 0;
+}
+.link-text {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.5vw;
+    text-align: center;
+    color: #000000;
+    margin: auto 0;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.text {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.2vw;
+    text-align: center;
+    color: #000000;
+    white-space: nowrap;
+}
