@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Gates } from './pages/Gates';
 import { Test } from './pages/test';
+import { Login } from './pages/Login';
 
 const Routers = () => {
     return (
@@ -8,7 +9,7 @@ const Routers = () => {
             <Routes>
                 <Route exact path="/" element={<Test></Test> }/>
                 <Route exact path="/gates" element={ <Gates></Gates>}/>
-                
+                <Route exact path="/login" element={ <Login></Login>}/>
             </Routes>
         </Router>
     )
