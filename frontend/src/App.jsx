@@ -7,6 +7,16 @@ function App() {
   const [testInput, setTestInput] = useState("");
   const [serverResponse, setServerResponse] = useState("");
 
+  const socket = new WebSocket('ws://localhost:8765');
+
+  socket.onmessage = ({data}) => {
+    console.log('Message from server ', data);
+  }
+
+  const handleSendWSmsg = () => {
+    socket.send("sup");
+  }
+
   const handleGetAck = () => {
     console.log('Attempting to GET from backend');
     axios.get(`http://127.0.0.1:8000/airplane/${testInput}`)
@@ -37,6 +47,9 @@ function App() {
       ) : (
         <div>Awaiting Server Response...</div>
       )}
+      <div>
+        <button onClick={handleSendWSmsg}>Send msg to ws server</button>
+      </div>
     </>
   )
 }
