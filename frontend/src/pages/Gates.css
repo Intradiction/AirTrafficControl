@@ -2,9 +2,9 @@
     overflow: hidden;
     white-space: nowrap;
     width:100%;
-    padding: 1vw;
+    padding: 2vw;
     justify-content: center;
-    margin: auto;
+    margin:auto;
 }
 .navbar {
     margin: 0 auto;
