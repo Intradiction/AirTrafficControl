@@ -34,15 +34,15 @@ export const Test = () => {
 
     return (
         <>
-            <div>
-                <img src={atcLogo} className="logo" alt="Vite logo" />
+            <div className='flex justify-center-center items-center'>
+                <img src={atcLogo} className="logo mx-auto content-center" alt="Vite logo" />
             </div>
             <h1>Air Traffic Control</h1>
-            <div>
+            <div className='m-4'>
                 Input an airplane ID:
                 <input value={testInput} onChange={e => setTestInput(e.target.value)} />
-                <button onClick={handleGetAck}>Get acknowledgement from backend</button>
-                <button onClick={goToGates}>Go to Next Page</button>
+                <button className='m-3 p-3 border-neutral-200' onClick={handleGetAck} >Get acknowledgement from backend</button>
+                <button className='m-3 p-3 border-neutral-200' onClick={goToGates}>Go to Next Page</button>
             </div>
 
             {serverResponse ? (

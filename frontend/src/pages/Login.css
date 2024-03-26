@@ -1,0 +1,104 @@
+/* pages/LoginPage.css */
+.login-container {
+  position: absolute;
+  top: 10%;
+  left: 0;
+  right: 0;
+  margin-top: -9px;
+  width: 25vw;
+  margin: auto;
+  padding-top: 10vh;
+  border: 1px solid #ccc;
+  border-radius: 9px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center; /* Center text horizontally */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content vertically */
+  justify-content: center; /* Center content horizontally */
+}
+
+
+
+.form-group {
+  display: flex;
+  flex-direction: row;
+}
+
+.form-group-item {
+  margin: 0 2vw;
+}
+
+.radio-button-group {
+  display: flex;
+  flex-direction: column; /* To stack the label-input pairs vertically */
+}
+
+.radio-label {
+  display: flex; /* To align label and input horizontally */
+  align-items: center; /* To vertically center the label and input */
+  margin-bottom: 10px; /* Adjust the margin as needed to control spacing between label-input pairs */
+  margin-left: 1.5vw
+}
+
+.radio-label input {
+  margin-right: 10px; /* Adjust the margin as needed to control spacing between the label and input */
+}
+
+.input-style {
+  padding: 15px 1.5vw; /* Increase padding to make it bigger */
+  border-radius: 10px; /* Add rounded corners */
+}
+
+.input-style-2 {
+  padding: 15px 2vw; /* Increase padding to make it bigger */
+  border-radius: 10px; /* Add rounded corners */
+}
+
+.input-style-3 {
+  padding: 15px 1.5vw; /* Increase padding to make it bigger */
+  border-radius: 10px; /* Add rounded corners */
+  margin-top: 3vh
+}
+
+.input-style-4 {
+  padding: 15px 1.5vw; /* Increase padding to make it bigger */
+  border-radius: 10px; /* Add rounded corners */
+}
+
+.input-style-5 {
+  padding: 15px 2vw; /* Increase padding to make it bigger */
+  border-radius: 10px; /* Add rounded corners */
+  margin-top: 3vh
+}
+
+label {
+  display: block;
+}
+
+input {
+  width: 94%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login-container > img {
+    width: 70px;
+    height: 70px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}

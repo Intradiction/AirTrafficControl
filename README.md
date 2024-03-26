@@ -12,4 +12,3 @@ To run this project on your local machine (assuming you have a Firestore databas
     - Make sure you are in the [frontend](frontend/) folder
     - run `npm install`
     - run `npm run dev` to start the frontend
-    - run `npm install react-router-dom`
