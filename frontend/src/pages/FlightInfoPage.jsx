@@ -6,14 +6,14 @@ export const FlightInfoPage = () => {
  
 
     return (
-        <div className="gates-container">
+        <div className="flights-container">
             <link rel="preconnect" href="https://rsms.me/" />
             <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
             <Navbar className="navbar" title={"AC1722|YYZ - LGA"} />
 
-            <div className="body-container">
-                <div className="info-container">
-                    <div className="info-column">
+            <div className="flight-body-container">
+                <div className="flight-info-container">
+                    <div className="flight-info-column">
                         <div className="info-section">
                             <div className="info-text">Clearance</div>
                             <div className="line"></div>
@@ -66,7 +66,7 @@ export const FlightInfoPage = () => {
                             </div>
                     </div>
                 </div>
-                <div className="image-container">
+                <div className="flight-image-container">
                     <img src={placeholder} className="image"></img>
                 </div>
             </div>
