@@ -1,18 +1,19 @@
-.gates-container {
+.flights-container {
     overflow: hidden;
     white-space: nowrap;
-    width:100%;
+    width: 100%;
     padding: 2vw;
     justify-content: center;
-    margin:auto;
+    margin: auto;
 }
+
 .navbar {
     margin: 0 auto;
     width: 100%;
     z-index: 2;
 }
 
-.body-container {
+.flight-body-container {
     display: flex;
     width: 100%;
     flex-direction: row;
@@ -20,13 +21,14 @@
     margin-bottom: 1vw;
     margin-top: 1vw;
 }
-.info-container {
+
+.flight-info-container {
     display: flex;
-    width:20%;
+    width: 20%;
     flex-direction: column;
 }
 
-.info-column{
+.flight-info-column {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -43,7 +45,7 @@
     margin: .35vw .75vw .35vw .75vw;
 }
 
-.image-container {
+.flight-image-container {
     display: flex;
     width: 76%;
     height: 34.8vw;
@@ -51,12 +53,12 @@
     border-radius: 1vw;
     margin: .75vw;
     margin-left: 2vw;
-    justify-content:center;
+    justify-content: center;
 }
 
 .text-group {
-display: flex;
-flex-direction: row;
+    display: flex;
+    flex-direction: row;
 }
 
 .info-text {
@@ -70,7 +72,7 @@ flex-direction: row;
     margin: .75vw auto;
 }
 
-.line{
+.line {
     width: 85%;
     border-bottom: .15vw solid white;
     margin: .5vw auto 1vw auto;
@@ -78,18 +80,19 @@ flex-direction: row;
 
 
 .image {
-    overflow:hidden;
+    overflow: hidden;
     width: 100%;
-    max-width:100%;
+    max-width: 100%;
     height: auto;
     margin: 1vw;
 }
 
 grid {
-    display:grid;
+    display: grid;
     width: 70%;
     margin: .75vw auto;
 }
+
     grid::before {
         display: block;
         width: 80%;
@@ -110,5 +113,5 @@ grid {
 }
 
 .empty-grid {
-    visibility:hidden;
+    visibility: hidden;
 }
