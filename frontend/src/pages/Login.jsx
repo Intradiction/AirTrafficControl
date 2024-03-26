@@ -9,10 +9,10 @@ export const Login = () => {
 
     return (
         <div className="bg" style={{
-            backgroundImage: `url(${bg})`, backgroundSize: 'cover',
+            backgroundImage: `url("${bg}")`, backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',height: '100vh'
           }}>
-            <div className="login-container" style={{ backgroundColor: `white` }}>
+            <div className="login-container" style={{ backgroundColor: `rgba(255,255,255,0.8)` }}>
               <img src={logo} alt="Logo" />
               <h1 style={{color: '#1b2c59'}} >Login</h1>
               <form>

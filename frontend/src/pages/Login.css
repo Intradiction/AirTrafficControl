@@ -95,8 +95,8 @@ button {
 }
 
 .login-container > img {
-    width: 70px;
-    height: 70px;
+    width: 4vw;
+    height: 4vw;
 }
 
 button:hover {
