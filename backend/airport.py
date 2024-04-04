@@ -1,8 +1,11 @@
 import queue
-Queue distant = new Queue(maxsize = 20)
-Queue overhead = new Queue( maxsize = 10)
-Queue runway = new Queue( maxsize = 3)
-Queue gate = new Queue( maxsize = 5)
+import time
+from fastapi import WebSocket
+
+distant = queue.Queue(maxsize = 20);
+overhead = queue.Queue(maxsize = 10);
+runway = queue.Queue( maxsize = 3);
+gate = queue.Queue( maxsize = 5);
 
 
 def distant_to_overhead():
@@ -14,7 +17,6 @@ def distant_to_overhead():
 		if not overhead.full():
 			enteringFlight = distant.pop()
 			overhead.push(enteringFlight)
-			distantSem.release()
 			print(f'Flight number {enteringFlight.id} is entering overhead airspace')
 		else:
 			print("Error occurred")
@@ -30,8 +32,7 @@ def overhead_to_distant():
 		if not distant.full():
 			departingFlight = overhead.pop()
 			distant.push(departingFlight)
-			overheadSem.release()
-			print(f'Flight number {enteringFlight.id} is departing overhead airspace')
+			print(f'Flight number {departingFlight.id} is departing overhead airspace')
 		else:
 			print("Error occurred")
 	else:
@@ -59,7 +60,7 @@ def runway_to_overhead():
 		if not overhead.full():
 			departingFlight = runway.pop()
 			overhead.push(departingFlight)
-			print(f'Flight number {enteringFlight.id} is departing runway')
+			print(f'Flight number {departingFlight.id} is departing runway')
 		else:
 			print("Error occurred")
 	else:
@@ -88,8 +89,15 @@ def gate_to_runway():
 		if not runway.full():
 			departingFlight = gate.pop()
 			runway.push(departingFlight)
-			print(f'Flight number {enteringFlight.id} is departing gate')
+			print(f'Flight number {departingFlight.id} is departing gate')
 		else:
 			print("Error occurred")
 	else:
 		print("No flights in gates")
+
+async def websocket_endpoint(websocket: WebSocket):
+	await websocket.accept()
+	while True:
+		res = {}
+		data = await websocket.receive_text()
+		print(f'Data received from client: {data}')

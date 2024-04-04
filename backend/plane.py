@@ -1,6 +1,6 @@
 class plane:
 
-  def __init__(self, id, status, capacity, weight, type, pilot_id):
+  def __init__(self, id, status, capacity, weight, planeType, pilot_id):
     self.id = id
     self.status = status
     self.capacity = capacity
