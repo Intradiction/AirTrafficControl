@@ -1,6 +1,5 @@
 from threading import Thread, Timer
 import time
-
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 import firebase_admin
@@ -98,6 +97,19 @@ async def create_airplane(airplane_id: int):
 
     return {"message": "Successfully created new plane"}
 
+@app.get("/gated")
+async def getGatedPlane():
+     gq_doc_ref = db.collection("AirplaneQueues").document("gate1")
+     gq_doc = gq_doc_ref.get()
+     gatequeue_list = gq_doc.to_dict()['airplane_ids']
+     return gatequeue_list
+
+@app.get("/runway")
+async def getGatedPlane():
+     rq_doc_ref = db.collection("AirplaneQueues").document("runway1")
+     rq_doc = rq_doc_ref.get()
+     runwayqueue_list = rq_doc.to_dict()['airplane_ids']
+     return runwayqueue_list
 
 # WS connection 
 @app.websocket("/ws")

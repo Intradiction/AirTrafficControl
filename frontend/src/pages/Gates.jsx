@@ -3,6 +3,7 @@ import './Gates.css';
 import placeholder from '../assets/placeholder.png'
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios';
 
 export const Gates = () => {
 
@@ -21,7 +22,7 @@ export const Gates = () => {
         //get gates from backend
         var table = document.getElementById(tableID).getElementsByTagName('tbody')[0];
         var count = 0
-        if (set) {
+        if (set && set.length > 0) {
             const gates = JSON.parse(set)
             for (const gate in gates) {
                 var row = table.insertRow(count)
@@ -48,14 +49,32 @@ export const Gates = () => {
     }
 
     function getRunwayList() {
-        //setRunwayList()
+
+        axios.get(`http://127.0.0.1:8000/runway`)
+            .then((res) => {
+                console.log('Received response with runway data:')
+                console.log(res.data);
+                setRunwayList(res.data)
+
+            })
+            .catch((error) => {
+                console.error(error);
+            });
 
         updateTable("runwayTable", runwayList)
     }
 
     function getGateList() {
-        //setGateList()
+        axios.get(`http://127.0.0.1:8000/gated`)
+            .then((res) => {
+                console.log('Received response with gate data:')
+                console.log(res.data);
+                setGateList(res.data)
 
+            })
+            .catch((error) => {
+                console.error(error);
+            });
         updateTable("gateTable", gateList)
     }
 
