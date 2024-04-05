@@ -98,7 +98,7 @@ export const Gates = () => {
         <div className="gates-container">
             <link rel="preconnect" href="https://rsms.me/" />
             <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-            <Navbar className="navbar" title={"Gates and Runways - LGA"} />
+            <Navbar className="navbar" title={"Dashboard - LGA"} />
 
             <div className="body-container">
                 <div className="info-container">

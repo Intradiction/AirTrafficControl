@@ -2,8 +2,13 @@
 // Navbar.js
 import logo from '../assets/air-traffic-controller_512.png';
 import './navbar.css';
-
+import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 function Navbar({ title }) {
+    const history = useNavigate();
+    useEffect(() => {
+        setTimeout(showTime, 500)
+    }, [])
     setInterval(showTime, 1000);
     function showTime() {
         // Getting current time and date
@@ -32,10 +37,29 @@ function Navbar({ title }) {
             am_pm;
 
         // Displaying the time
-        document.getElementById(
-            "clock"
-        ).innerHTML = currentTime;
+        document.getElementById("time").innerHTML = currentTime;
     }
+
+    const goToDash = (e) => {
+        e.preventDefault();
+        let url = "/"
+
+        history({
+            pathname: url,
+            state: {}
+        });
+    };
+
+
+    const goToAddPlanes = (e) => {
+        e.preventDefault();
+        let url = "/add"
+
+        history({
+            pathname: url,
+            state: {}
+        });
+    };
 
     return (
 
@@ -47,11 +71,12 @@ function Navbar({ title }) {
                 <p className="title">{title}</p>
             </div>
             <div className="links-container">
-                <p className="link-text">Add Flights</p>
-                <p className="link-text">Dashboard</p>
+
+                <p onClick={goToDash} className="link-text">Dashboard</p>
+                <p onClick={goToAddPlanes} className="link-text">Add Flights</p>
             </div>
             <div className="clock">
-                <p className="text" id="clock"></p>
+                <p className="text" id="time"></p>
             </div>
 
         </div>
