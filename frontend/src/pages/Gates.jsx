@@ -10,19 +10,58 @@ export const Gates = () => {
     const history = useNavigate();
     const [gateList, setGateList] = useState();
     const [runwayList, setRunwayList] = useState();
+    const [distantList, setDistantList] = useState();
+    const [overheadList, setOverheadList] = useState();
+
+
 
     useEffect(() => {
-        setInterval(() => { 
+        setTimeout(function () {
             console.log("Updating")
-            getGateList()
-            getRunwayList()
-        }, 9000)
+            getList("gate", "gateTable", gateList)
+            getList("runway", "runwayTable", runwayList)
+            getList("overhead", "overheadTable", overheadList)
+            getList("distant", "distantTable", distantList)
+        }, 1)
     },[])
 
+    function getList(path, tableID, set) {
+        try {
+            axios.get(`http://127.0.0.1:8000/` + path)
+                .then((res) => {
+                    console.log('Received response with runway data:')
+                    console.log(res.data);
+                    switch (tableID) {
+                        case "runwayTable":
+                            setRunwayList(res.data)
+                            break
+                        case "gateTable":
+                            setGateList(res.data)
+                            break
+                        case "distantTable":
+                            setDistantList(res.data)
+                            break
+                        case "overheadTable":
+                            setOverheadList(res.data)
+                            break
+                    }
+
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+        catch (error) {
+            console.error("Server not connected")
+        }
+
+        updateTable(tableID, set)
+    }
     function updateTable(tableID, set) {
         //update gates values
         //get gates from backend
         var table = document.getElementById(tableID).getElementsByTagName('tbody')[0];
+        table.innerHTML = ""
         var count = 0
         if (set && set.length > 0) {
             const gates = JSON.parse(set)
@@ -50,37 +89,6 @@ export const Gates = () => {
         
     }
 
-    function getRunwayList() {
-
-        axios.get(`http://127.0.0.1:8000/runway`)
-            .then((res) => {
-                console.log('Received response with runway data:')
-                console.log(res.data);
-                setRunwayList(res.data)
-
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-
-        updateTable("runwayTable", runwayList)
-    }
-
-    function getGateList() {
-        axios.get(`http://127.0.0.1:8000/gated`)
-            .then((res) => {
-                console.log('Received response with gate data:')
-                console.log(res.data);
-                setGateList(res.data)
-
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-        updateTable("gateTable", gateList)
-    }
-
-
     return (
         <div className="gates-container">
             <link rel="preconnect" href="https://rsms.me/" />
@@ -106,9 +114,9 @@ export const Gates = () => {
                         </table>
                     </div>
                     <div className="table-container">
-                        <div className="text">Runways</div>
+                        <div className="text">Overhead Airspace</div>
                         <div className="line"></div>
-                        <table id="runwayTable">
+                        <table id="overheadTable">
                             <thead>
                                 <tr>
                                     <th>Gate No.</th>
@@ -122,9 +130,41 @@ export const Gates = () => {
                         </table>
                     </div>
                 </div>
-                <div className="image-container">
-                    <img src={placeholder} className="image"></img>
+                <div className="info-container">
+                    <div className="table-container">
+                        <div className="text">Runway</div>
+                        <div className="line"></div>
+                        <table id="runwayTable">
+                            <thead>
+                                <tr>
+                                    <th>Gate No.</th>
+                                    <th>Status</th>
+                                    <th>In Use</th>
+                                    <th>Time to Clear</th>
+                                </tr>
+                            </thead>
+                            <tbody >
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="table-container">
+                        <div className="text">Distant Airspace</div>
+                        <div className="line"></div>
+                        <table id="distantTable">
+                            <thead>
+                                <tr>
+                                    <th>Gate No.</th>
+                                    <th>Status</th>
+                                    <th>In Use</th>
+                                    <th>Time to Clear</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
             </div>
 
     </div>
