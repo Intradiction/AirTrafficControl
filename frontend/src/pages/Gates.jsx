@@ -13,8 +13,6 @@ export const Gates = () => {
     useEffect(() => {
         getGateList()
         getRunwayList()
-        updateTable("gateTable", gateList)
-        updateTable("runwayTable", runwayList)
         
     },[])
 
@@ -51,10 +49,14 @@ export const Gates = () => {
 
     function getRunwayList() {
         //setRunwayList()
+
+        updateTable("runwayTable", runwayList)
     }
 
     function getGateList() {
         //setGateList()
+
+        updateTable("gateTable", gateList)
     }
 
 
