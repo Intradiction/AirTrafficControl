@@ -1,4 +1,5 @@
 import Navbar from '../components/navbar';
+import bg from '../assets/Planebg.jpg';
 import './Gates.css';
 import placeholder from '../assets/placeholder.png'
 import { useState, useEffect, useRef } from 'react'
@@ -90,6 +91,10 @@ export const Gates = () => {
     }
 
     return (
+        <div className="bg" style={{
+            backgroundImage: `url("${bg}")`, backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',height: '100vh'
+          }}>
         <div className="gates-container">
             <link rel="preconnect" href="https://rsms.me/" />
             <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
@@ -167,6 +172,7 @@ export const Gates = () => {
 
             </div>
 
+    </div>
     </div>
   );
 };
