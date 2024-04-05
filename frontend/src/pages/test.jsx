@@ -61,7 +61,7 @@ export const Test = () => {
         .then((res) => {
             console.log('Received response with data:')
             console.log(res.data);
-            setServerResponse(res.data.message);
+            
         })
         .catch((error) => {
             console.error(error);

@@ -1,11 +1,53 @@
+from threading import Thread, Timer
+import time
+
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 
-
 from atc_classes import Plane, Flight
+
+def move_plane(new_plane: Plane):
+    print(f'moving plane with id {new_plane.id}')
+
+# Function that moves planes at set intervals
+def updater():
+    while True:
+        time.sleep(5)
+        print('updater interval triggered')
+
+        # Move planes from queues into their next queue
+        dq_doc_ref = db.collection("AirplaneQueues").document("distant")
+        oq_doc_ref = db.collection("AirplaneQueues").document("overhead")
+        dq_doc = dq_doc_ref.get()
+        oq_doc = oq_doc_ref.get()
+
+        dq_moved_plane, oq_moved_plane = None, None
+
+        # Pop first airplane from each queue 
+        distantqueue_list = dq_doc.to_dict()['airplane_ids']
+        if distantqueue_list:
+            dq_moved_plane = distantqueue_list.pop(0)
+
+        overheadqueue_list = oq_doc.to_dict()['airplane_ids']
+        if overheadqueue_list:
+            oq_moved_plane = overheadqueue_list.pop(0)
+
+        # Then add them to the next queue AFTER all have been popped
+        if dq_moved_plane is not None:
+            overheadqueue_list.append(dq_moved_plane)
+
+        # Finally, update the Firestore Database with the correct states
+        dq_doc_ref.set({'airplane_ids': distantqueue_list})
+        oq_doc_ref.set({'airplane_ids': overheadqueue_list})
+
+
+    
+updater_thread = Thread(target=updater)
+updater_thread.daemon = True # Make thread exit when parent (main thread) exists, mainly usefull for dev environment with hot reload
+updater_thread.start()
 
 # Initialize FastAPI app
 app = FastAPI()
@@ -28,7 +70,7 @@ db = firestore.client()
 # The api paths
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "FastAPI server for COE892 Project: Air Traffic Control"}
 
 @app.get("/airplane/{airplane_id}")
 async def ack_airplane(airplane_id):
@@ -38,9 +80,23 @@ async def ack_airplane(airplane_id):
 async def create_airplane(airplane_id: int):
     new_plane = Plane(id=airplane_id, status='distant')
 
-    doc_ref = db.collection("Airplanes").document('airplane1')
+    # Add the new airplane to Airplanes collection of Firestore Database
+    doc_ref = db.collection("Airplanes").document("airplane1")
     doc_ref.set(new_plane.__dict__)
     print(f'Added new plane: {new_plane}')
+
+    # Add the new airplane to distant queue (document in Firestore Database)
+    dq_doc_ref = db.collection("AirplaneQueues").document("distant")
+    dq_doc = dq_doc_ref.get()
+    if dq_doc.exists:
+        distantqueue_list = dq_doc.to_dict()['airplane_ids']
+        distantqueue_list.append(new_plane.id)
+
+        dq_doc_ref.set({'airplane_ids': distantqueue_list})
+    else:
+        print("ERROR: could not find distant queue document from Firebase")
+
+    return {"message": "Successfully created new plane"}
 
 
 # WS connection 
