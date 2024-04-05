@@ -1,5 +1,5 @@
-# Air Trafic Control 
-This project contains Frontend and Backend for an Air Traffic Control system. The frontend was built with React, the backend with FastAPI in Python. Database TBD.
+# Air Traffic Control 
+This project contains Frontend and Backend for an Air Traffic Control system. The frontend was built with React, the backend with FastAPI in Python. Firebase's Firestore was used for the database.
 
 ## Run Locally
 To run this project on your local machine (assuming you have a Firestore database set up),
