@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Gates } from './pages/Gates';
 import { Test } from './pages/test';
-import { Login } from './pages/Login';
+import { Login } from './pages/AddPlane';
 import { FlightInfoPage } from './pages/FlightInfoPage';
 
 const Routers = () => {
