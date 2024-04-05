@@ -5,6 +5,11 @@ import atcLogo from '../assets/air-traffic-controller_512.png'
 import { useNavigate } from 'react-router-dom'
 import './test.css'
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getFirestore, doc, setDoc, onSnapshot } from 'firebase/firestore'
+
 export const Test = () => {
     let testAirplaneCount = 1;
 
@@ -22,6 +27,25 @@ export const Test = () => {
             }
         }
     );
+
+    // On firestore db change
+    const firebaseConfig = {
+        apiKey: "AIzaSyBLucmBM7d2tugfiQCK5HBlFLypuoiVAQw",
+        authDomain: "air-traffic-control-743e7.firebaseapp.com",
+        databaseURL: "https://air-traffic-control-743e7-default-rtdb.firebaseio.com",
+        projectId: "air-traffic-control-743e7",
+        storageBucket: "air-traffic-control-743e7.appspot.com",
+        messagingSenderId: "846576568740",
+        appId: "1:846576568740:web:89d9888ec9f9d9274c1931",
+        measurementId: "G-DGQJXC13JK"
+      };
+      
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const unsub = onSnapshot(doc(db, "AirplaneQueues", "distant"), (doc) => {
+        console.log("Current data: ", doc.data());
+    });
 
     // Handle component on load
     useEffect(() => {
