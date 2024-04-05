@@ -12,9 +12,11 @@ export const Gates = () => {
     const [runwayList, setRunwayList] = useState();
 
     useEffect(() => {
-        getGateList()
-        getRunwayList()
-        
+        setInterval(() => { 
+            console.log("Updating")
+            getGateList()
+            getRunwayList()
+        }, 9000)
     },[])
 
     function updateTable(tableID, set) {
