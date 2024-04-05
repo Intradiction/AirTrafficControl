@@ -1,4 +1,5 @@
 import logo from '../assets/air-traffic-controller_512.png';
+import Navbar from '../components/navbar';
 import bg from '../assets/Planebg.jpg';
 
 import './AddPlane.css';
@@ -100,6 +101,14 @@ export const Login = () => {
             backgroundImage: `url("${bg}")`, backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',height: '100vh'
           }}>
+            <div className="gates-container">
+            <link rel="preconnect" href="https://rsms.me/" />
+            <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+            <Navbar className="navbar" title={"Gates and Runways - LGA"} />
+            <div>
+                <br></br>
+                <br></br>
+              </div>
             <div className="login-container" style={{ backgroundColor: `rgba(255,255,255,0.8)` }}>
               <img src={logo} alt="Logo" />
               <h1 style={{color: '#1b2c59'}} >Add a New Plane</h1>
@@ -122,6 +131,7 @@ export const Login = () => {
                 <br></br>
               </div>
             </div>
+          </div>
           </div>
         );
       }
