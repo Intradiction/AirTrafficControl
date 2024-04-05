@@ -14,33 +14,52 @@ def move_plane(new_plane: Plane):
 # Function that moves planes at set intervals
 def updater():
     while True:
-        time.sleep(5)
+        time.sleep(10)
         print('updater interval triggered')
 
         # Move planes from queues into their next queue
         dq_doc_ref = db.collection("AirplaneQueues").document("distant")
         oq_doc_ref = db.collection("AirplaneQueues").document("overhead")
+        r1q_doc_ref = db.collection("AirplaneQueues").document("runway1")
+        g1q_doc_ref = db.collection("AirplaneQueues").document("gate1")
+        
         dq_doc = dq_doc_ref.get()
         oq_doc = oq_doc_ref.get()
+        r1q_doc = r1q_doc_ref.get()
+        g1q_doc = g1q_doc_ref.get()
 
-        dq_moved_plane, oq_moved_plane = None, None
+        dq_moved_plane, oq_moved_plane, r1q_moved_plane, g1q_moved_plane = None, None, None, None
 
         # Pop first airplane from each queue 
-        distantqueue_list = dq_doc.to_dict()['airplane_ids']
+        distantqueue_list = dq_doc.to_dict().get('airplane_ids', [])
         if distantqueue_list:
             dq_moved_plane = distantqueue_list.pop(0)
 
-        overheadqueue_list = oq_doc.to_dict()['airplane_ids']
+        overheadqueue_list = oq_doc.to_dict().get('airplane_ids', [])
         if overheadqueue_list:
             oq_moved_plane = overheadqueue_list.pop(0)
+
+        runway1queue_list = r1q_doc.to_dict().get('airplane_ids', [])
+        if runway1queue_list:
+            r1q_moved_plane = runway1queue_list.pop(0)
+
+        gate1queue_list = g1q_doc.to_dict().get('airplane_ids', [])
+        if gate1queue_list:
+            g1q_moved_plane = gate1queue_list.pop(0)
 
         # Then add them to the next queue AFTER all have been popped
         if dq_moved_plane is not None:
             overheadqueue_list.append(dq_moved_plane)
+        if oq_moved_plane is not None:
+            runway1queue_list.append(oq_moved_plane)
+        if r1q_moved_plane is not None:
+            gate1queue_list.append(r1q_moved_plane)
 
         # Finally, update the Firestore Database with the correct states
         dq_doc_ref.set({'airplane_ids': distantqueue_list})
         oq_doc_ref.set({'airplane_ids': overheadqueue_list})
+        r1q_doc_ref.set({'airplane_ids': runway1queue_list})
+        g1q_doc_ref.set({'airplane_ids': gate1queue_list})
 
 
     
@@ -97,7 +116,7 @@ async def create_airplane(airplane_id: int):
 
     return {"message": "Successfully created new plane"}
 
-@app.get("/gated")
+@app.get("/gate")
 async def getGatedPlane():
      gq_doc_ref = db.collection("AirplaneQueues").document("gate1")
      gq_doc = gq_doc_ref.get()
@@ -107,6 +126,20 @@ async def getGatedPlane():
 @app.get("/runway")
 async def getGatedPlane():
      rq_doc_ref = db.collection("AirplaneQueues").document("runway1")
+     rq_doc = rq_doc_ref.get()
+     runwayqueue_list = rq_doc.to_dict()['airplane_ids']
+     return runwayqueue_list
+
+@app.get("/overhead")
+async def getGatedPlane():
+     gq_doc_ref = db.collection("AirplaneQueues").document("overhead")
+     gq_doc = gq_doc_ref.get()
+     gatequeue_list = gq_doc.to_dict()['airplane_ids']
+     return gatequeue_list
+
+@app.get("/distant")
+async def getGatedPlane():
+     rq_doc_ref = db.collection("AirplaneQueues").document("distant")
      rq_doc = rq_doc_ref.get()
      runwayqueue_list = rq_doc.to_dict()['airplane_ids']
      return runwayqueue_list

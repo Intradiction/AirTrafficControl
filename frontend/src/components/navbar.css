@@ -69,5 +69,8 @@
     white-space: nowrap;
 }
 
-.table {
+.img {
+    width:5vw;
+    height:5vw;
+    margin:auto;
 }
