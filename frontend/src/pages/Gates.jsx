@@ -5,6 +5,11 @@ import placeholder from '../assets/placeholder.png'
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
+import { getFirestore, doc, setDoc, onSnapshot } from 'firebase/firestore'
+import { firebaseConfig } from '../config/config';
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+
 
 export const Gates = () => {
 
@@ -14,38 +19,53 @@ export const Gates = () => {
     const [distantList, setDistantList] = useState();
     const [overheadList, setOverheadList] = useState();
 
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
 
     useEffect(() => {
         setTimeout(function () {
-            console.log("Updating")
-            getList("gate", "gateTable", gateList)
-            getList("runway", "runwayTable", runwayList)
-            getList("overhead", "overheadTable", overheadList)
-            getList("distant", "distantTable", distantList)
-        }, 1)
+            onSnapshot(doc(db, "AirplaneQueues", "distant"), (doc) => {
+                getList("distant", "distantTable", distantList)
+            });
+            onSnapshot(doc(db, "AirplaneQueues", "overhead"), (doc) => {
+                getList("overhead", "overheadTable", overheadList)
+            });
+            onSnapshot(doc(db, "AirplaneQueues", "runway1"), (doc) => {
+                getList("runway", "runwayTable", runwayList)
+            });
+            onSnapshot(doc(db, "AirplaneQueues", "gate1"), (doc) => {
+                getList("gate", "gateTable", gateList)
+            });
+        }, 10)
+
     },[])
 
     function getList(path, tableID, set) {
         try {
             axios.get(`http://127.0.0.1:8000/` + path)
                 .then((res) => {
-                    console.log('Received response with runway data:')
-                    console.log(res.data);
                     switch (tableID) {
                         case "runwayTable":
                             setRunwayList(res.data)
+                            updateTable(tableID, res.data)
                             break
                         case "gateTable":
                             setGateList(res.data)
+                            updateTable(tableID, res.data)
                             break
                         case "distantTable":
                             setDistantList(res.data)
+
+                            updateTable(tableID, res.data)
                             break
                         case "overheadTable":
                             setOverheadList(res.data)
+
+                            updateTable(tableID, res.data)
                             break
                     }
+
 
                 })
                 .catch((error) => {
@@ -57,37 +77,41 @@ export const Gates = () => {
         }
 
         updateTable(tableID, set)
+
     }
     function updateTable(tableID, set) {
         //update gates values
         //get gates from backend
-        var table = document.getElementById(tableID).getElementsByTagName('tbody')[0];
-        table.innerHTML = ""
-        var count = 0
-        if (set && set.length > 0) {
-            const gates = JSON.parse(set)
-            for (const gate in gates) {
-                var row = table.insertRow(count)
-                var num = row.insertCell(0);
-                var status = row.insertCell(1);
-                var inUse = row.insertCell(2);
-                var timeClear = row.insertCell(3);
-
-                num.innerHTML = gates[gate].gateNo
-                status.innerHTML = gates[gate].status
-                inUse.innerHTML = gates[gate].inUse
-                timeClear.innerHTML = gates[gate].timeClear
-                count++
-            }
-        }
-        for (count; count < 5; count++) {
-            var newrow = table.insertRow(count)
-            newrow.insertCell(0);
-            newrow.insertCell(1);
-            newrow.insertCell(2);
-            newrow.insertCell(3);
-        }
+        try {
+            var table = document.getElementById(tableID).getElementsByTagName('tbody')[0];
+            table.innerHTML = ""
         
+            var count = 0
+            if (set && set.length > 0) {
+                const gates = set
+                for (const gate in gates) {
+                
+                    var row = table.insertRow(count)
+                    var id = row.insertCell(0);
+                    var pilot = row.insertCell(1);
+                    var planeType = row.insertCell(2);
+                    var capacity = row.insertCell(3);
+
+                    id.innerHTML = gates[gate].id
+                    pilot.innerHTML = gates[gate].pilot_id
+                    planeType.innerHTML = gates[gate].type
+                    capacity.innerHTML = gates[gate].capacity
+                    count++
+                }
+            }
+            for (count; count < 5; count++) {
+                var newrow = table.insertRow(count)
+                newrow.insertCell(0);
+                newrow.insertCell(1);
+                newrow.insertCell(2);
+                newrow.insertCell(3);
+            }
+        } catch (error) { console.log("Can't find tbody") }
     }
 
     return (
@@ -108,10 +132,10 @@ export const Gates = () => {
                         <table id="gateTable">
                             <thead>
                                 <tr>
-                                    <th>Gate No.</th>
-                                    <th>Status</th>
-                                    <th>In Use</th>
-                                    <th>Time to Clear</th>
+                                    <th>Flight ID</th>
+                                    <th>Pilot ID</th>
+                                    <th>Type</th>
+                                    <th>Capacity</th>
                                 </tr>
                             </thead>
                             <tbody >
@@ -124,10 +148,10 @@ export const Gates = () => {
                         <table id="overheadTable">
                             <thead>
                                 <tr>
-                                    <th>Gate No.</th>
-                                    <th>Status</th>
-                                    <th>In Use</th>
-                                    <th>Time to Clear</th>
+                                    <th>Flight ID</th>
+                                    <th>Pilot ID</th>
+                                    <th>Type</th>
+                                    <th>Capacity</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -142,10 +166,10 @@ export const Gates = () => {
                         <table id="runwayTable">
                             <thead>
                                 <tr>
-                                    <th>Gate No.</th>
-                                    <th>Status</th>
-                                    <th>In Use</th>
-                                    <th>Time to Clear</th>
+                                    <th>Flight ID</th>
+                                    <th>Pilot ID</th>
+                                    <th>Type</th>
+                                    <th>Capacity</th>
                                 </tr>
                             </thead>
                             <tbody >
@@ -158,10 +182,10 @@ export const Gates = () => {
                         <table id="distantTable">
                             <thead>
                                 <tr>
-                                    <th>Gate No.</th>
-                                    <th>Status</th>
-                                    <th>In Use</th>
-                                    <th>Time to Clear</th>
+                                    <th>Flight ID</th>
+                                    <th>Pilot ID</th>
+                                    <th>Type</th>
+                                    <th>Capacity</th>
                                 </tr>
                             </thead>
                             <tbody>

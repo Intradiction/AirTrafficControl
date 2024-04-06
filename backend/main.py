@@ -5,8 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
-
 from atc_classes import Plane, Flight
+import json
 
 def move_plane(new_plane: Plane):
     print(f'moving plane with id {new_plane.id}')
@@ -99,7 +99,7 @@ async def create_airplane(airplane_id: int):
     new_plane = Plane(id=airplane_id, status='distant')
 
     # Add the new airplane to Airplanes collection of Firestore Database
-    doc_ref = db.collection("Airplanes").document("airplane1")
+    doc_ref = db.collection("Airplanes").document(f"airplane{new_plane.id}")
     doc_ref.set(new_plane.__dict__)
     print(f'Added new plane: {new_plane}')
 
@@ -118,31 +118,64 @@ async def create_airplane(airplane_id: int):
 
 @app.get("/gate")
 async def getGatedPlane():
-     gq_doc_ref = db.collection("AirplaneQueues").document("gate1")
-     gq_doc = gq_doc_ref.get()
-     gatequeue_list = gq_doc.to_dict()['airplane_ids']
-     return gatequeue_list
+    gq_doc_ref = db.collection("AirplaneQueues").document("gate1")
+    gq_doc = gq_doc_ref.get()
+    gatequeue_list = gq_doc.to_dict()['airplane_ids']
+    docs = db.collection("Airplanes").stream()
+    ref = []
+
+    for doc in docs:
+        coll = doc.to_dict()
+        jsonColl = json.loads(json.dumps(coll))
+        if jsonColl['id'] in gatequeue_list:
+            ref.append(coll)
+    return ref
 
 @app.get("/runway")
 async def getGatedPlane():
-     rq_doc_ref = db.collection("AirplaneQueues").document("runway1")
-     rq_doc = rq_doc_ref.get()
-     runwayqueue_list = rq_doc.to_dict()['airplane_ids']
-     return runwayqueue_list
+    rq_doc_ref = db.collection("AirplaneQueues").document("runway1")
+    rq_doc = rq_doc_ref.get()
+    runwayqueue_list = rq_doc.to_dict()['airplane_ids']
+    docs = db.collection("Airplanes").stream()
+    ref = []
+
+    for doc in docs:
+        coll = doc.to_dict()
+        jsonColl = json.loads(json.dumps(coll))
+        if jsonColl['id'] in runwayqueue_list:
+            ref.append(coll)
+    return ref
 
 @app.get("/overhead")
 async def getGatedPlane():
-     gq_doc_ref = db.collection("AirplaneQueues").document("overhead")
-     gq_doc = gq_doc_ref.get()
-     gatequeue_list = gq_doc.to_dict()['airplane_ids']
-     return gatequeue_list
+    oq_doc_ref = db.collection("AirplaneQueues").document("overhead")
+    oq_doc = oq_doc_ref.get()
+    overheadqueue_list = oq_doc.to_dict()['airplane_ids']    
+    docs = db.collection("Airplanes").stream()
+    ref = []
+
+    for doc in docs:
+        coll = doc.to_dict()
+        jsonColl = json.loads(json.dumps(coll))
+        if jsonColl['id'] in overheadqueue_list:
+            ref.append(coll)
+    return ref
 
 @app.get("/distant")
 async def getGatedPlane():
-     rq_doc_ref = db.collection("AirplaneQueues").document("distant")
-     rq_doc = rq_doc_ref.get()
-     runwayqueue_list = rq_doc.to_dict()['airplane_ids']
-     return runwayqueue_list
+    dq_doc_ref = db.collection("AirplaneQueues").document("distant")
+    dq_doc = dq_doc_ref.get()
+    distantqueue_list = dq_doc.to_dict()['airplane_ids']
+    docs = db.collection("Airplanes").stream()
+    ref = []
+
+    for doc in docs:
+        coll = doc.to_dict()
+        jsonColl = json.loads(json.dumps(coll))
+        if jsonColl['id'] in distantqueue_list:
+            ref.append(coll)
+    return ref
+
 
 # WS connection 
 @app.websocket("/ws")
