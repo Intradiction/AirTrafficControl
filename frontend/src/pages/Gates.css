@@ -23,6 +23,7 @@
 .info-container {
     display: flex;
     width: 60%;
+    height: 34vw;
     flex-direction: column;
 }
 
